@@ -72,22 +72,17 @@ class ViewController: UIViewController {
             .then(execute: { (token) -> Promise<[String: Any]> in
                 print("token:\(token)")
                 return self.downloadUserInfo(token: token)
-            })
-            .then(execute: { (userInfo) -> (Promise<[String: Any]>) in
+            }).then(execute: { (userInfo) -> (Promise<[String: Any]>) in
                 print("userInfo:\(userInfo)")
                 return self.updateUserInfo(["Weight": 60.0, "Height": 180], token: userInfo["Token"] as! String)
-            })
-            .then(execute: { (uploadResult) -> Promise<[String: Any]> in
+            }).then(execute: { (uploadResult) -> Promise<[String: Any]> in
                 print("uploadResult:\(uploadResult)")
                 return self.downloadUserInfo(token: uploadResult["Token"] as! String)
-            })
-            .then(execute: { (userInfo) -> Void in
+            }).then(execute: { (userInfo) -> Void in
                 print("userInfo:\(userInfo)")
-            })
-            .catch(execute: { (error) in
+            }).catch(execute: { (error) in
                 print("error:\(error)")
-            })
-            .always(execute: {
+            }).always(execute: {
                 print("User login completed")
             })
     }
