@@ -17,6 +17,22 @@ class ViewController: UIViewController {
         case networkError
     }
     
+    //Check network
+    func checkNetwork() -> Promise<Bool> {
+        return Promise(resolvers: { (fulfill, reject) in
+            DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: { 
+                let result = arc4random()%2 == 1
+                if result {
+                    fulfill(true)
+                } else {
+                    reject(HttpError.networkError)
+                }
+            })
+            print(#function)
+        })
+    }
+    
+    
     //Login
     func loginWithUserName(_ name: String, password: String) -> Promise<String> {
         return Promise(resolvers: { (fulfill, reject) in
@@ -86,6 +102,57 @@ class ViewController: UIViewController {
                 print("User login completed")
             })
     }
+    
+    
+    @IBAction func loginAndCheckNetWork(_ sender: Any) {
+        
+        let checkNetworkPromise = self.checkNetwork()
+        let loginPromise = self.loginWithUserName("John", password: "111111")
+        
+
+        firstly {
+                when(fulfilled: checkNetworkPromise, loginPromise)
+            }.then { (result, token) -> Promise<[String: Any]> in
+                print("token:\(token)")
+                return self.downloadUserInfo(token: token)
+            }.then(execute: { (userInfo) -> (Promise<[String: Any]>) in
+                print("userInfo:\(userInfo)")
+                return self.updateUserInfo(["Weight": 60.0, "Height": 180], token: userInfo["Token"] as! String)
+            }).then(execute: { (uploadResult) -> Promise<[String: Any]> in
+                print("uploadResult:\(uploadResult)")
+                return self.downloadUserInfo(token: uploadResult["Token"] as! String)
+            }).then(execute: { (userInfo) -> Void in
+                print("userInfo:\(userInfo)")
+            }).catch(execute: { (error) in
+                print("error:\(error)")
+            }).always(execute: {
+                print("User login completed")
+            })
+        
+        /*
+        when(fulfilled: checkNetworkPromise, loginPromise)
+            .then { (result, token) -> Promise<[String: Any]> in
+                print("token:\(token)")
+                return self.downloadUserInfo(token: token)
+            }.then(execute: { (userInfo) -> (Promise<[String: Any]>) in
+                print("userInfo:\(userInfo)")
+                return self.updateUserInfo(["Weight": 60.0, "Height": 180], token: userInfo["Token"] as! String)
+            }).then(execute: { (uploadResult) -> Promise<[String: Any]> in
+                print("uploadResult:\(uploadResult)")
+                return self.downloadUserInfo(token: uploadResult["Token"] as! String)
+            }).then(execute: { (userInfo) -> Void in
+                print("userInfo:\(userInfo)")
+            }).catch(execute: { (error) in
+                print("error:\(error)")
+            }).always(execute: {
+                print("User login completed")
+            })
+         */
+        
+    }
+    
+    
+    
     
     func test1() -> Void {
         let promise = dispatch_promise(DispatchQueue.global(), { () -> (Data, String)  in

@@ -29,13 +29,21 @@
                                     <action selector="userLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hs5-aa-chB"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rL1-da-K36">
+                                <rect key="frame" x="106" y="216" width="162" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="loginAndCheckNetwork"/>
+                                <connections>
+                                    <action selector="loginAndCheckNetWork:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ozy-Ap-DU0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-172" y="115.59220389805098"/>
+            <point key="canvasLocation" x="-455.19999999999999" y="120.98950524737631"/>
         </scene>
     </scenes>
 </document>
